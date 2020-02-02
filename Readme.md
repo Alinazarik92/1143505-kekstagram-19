@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Алина Зарипова](https://up.htmlacademy.ru/javascript/19/user/1143505).
-* Наставник: `Неизвестно`.
+* Наставник: [Захар Овчаров](https://htmlacademy.ru/profile/id906939).
 
 ---
 
