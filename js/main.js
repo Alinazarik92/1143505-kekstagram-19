@@ -72,26 +72,26 @@ var bigPictureImage = bigPicture.querySelector('.big-picture__img');
 bigPictureImage.querySelector('img').src = photos[0].url;
 bigPicture.querySelector('.likes-count').textContent = photos[0].likes;
 
-var SHOWN_COMMENTS_COUNT = 5;
+var SHOWN_COMMENT_COUNT = 5;
 
-var getCommentsTitle = function (arr) {
-  var commentsTitle = '';
+var getCommentTitle = function (arr) {
+  var commentTitle = '';
   if (arr.length === 1) {
-    commentsTitle = ' комментарий';
+    commentTitle = ' комментарий';
   }
   if (arr.length >= 2 && arr.length <= 4) {
-    commentsTitle = ' комментария';
+    commentTitle = ' комментария';
   }
   if (arr.length === 5) {
-    commentsTitle = ' комментариев';
+    commentTitle = ' комментариев';
   }
-  return commentsTitle;
+  return commentTitle;
 };
 
-if (photos[0].comments.length > SHOWN_COMMENTS_COUNT) {
+if (photos[0].comments.length > SHOWN_COMMENT_COUNT) {
   bigPicture.querySelector('.comments-count').textContent = photos[0].comments.length;
 } else {
-  bigPicture.querySelector('.social__comment-count').textContent = photos[0].comments.length + getCommentsTitle(photos[0].comments);
+  bigPicture.querySelector('.social__comment-count').textContent = photos[0].comments.length + getCommentTitle(photos[0].comments);
   bigPicture.querySelector('.social__comments-loader').classList.add('hidden');
 }
 
@@ -115,8 +115,8 @@ var renderComment = function (comment) {
 
 var commentList = bigPicture.querySelector('.social__comments');
 
-if (photos[0].comments.length > SHOWN_COMMENTS_COUNT) {
-  for (i = 0; i < SHOWN_COMMENTS_COUNT; i++) {
+if (photos[0].comments.length > SHOWN_COMMENT_COUNT) {
+  for (i = 0; i < SHOWN_COMMENT_COUNT; i++) {
     renderComment(photos[0].comments[i]);
   }
 } else {
