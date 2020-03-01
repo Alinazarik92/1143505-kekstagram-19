@@ -71,20 +71,28 @@ bigPicture.classList.remove('hidden');
 var bigPictureImage = bigPicture.querySelector('.big-picture__img');
 bigPictureImage.querySelector('img').src = photos[0].url;
 bigPicture.querySelector('.likes-count').textContent = photos[0].likes;
-if (photos[0].comments.length === 1) {
-  bigPicture.querySelector('.social__comment-count').textContent = photos[0].comments.length + ' комментарий';
-  bigPicture.querySelector('.social__comments-loader').classList.add('hidden');
-}
-if (photos[0].comments.length >= 2 && photos[0].comments.length <= 4) {
-  bigPicture.querySelector('.social__comment-count').textContent = photos[0].comments.length + ' комментария';
-  bigPicture.querySelector('.social__comments-loader').classList.add('hidden');
-}
-if (photos[0].comments.length === 5) {
-  bigPicture.querySelector('.social__comment-count').textContent = photos[0].comments.length + ' комментариев';
-  bigPicture.querySelector('.social__comments-loader').classList.add('hidden');
-}
-if (photos[0].comments.length > 5) {
+
+var SHOWN_COMMENTS_COUNT = 5;
+
+var getCommentsTitle = function (arr) {
+  var commentsTitle = '';
+  if (arr.length === 1) {
+    commentsTitle = ' комментарий';
+  }
+  if (arr.length >= 2 && arr.length <= 4) {
+    commentsTitle = ' комментария';
+  }
+  if (arr.length === 5) {
+    commentsTitle = ' комментариев';
+  }
+  return commentsTitle;
+};
+
+if (photos[0].comments.length > SHOWN_COMMENTS_COUNT) {
   bigPicture.querySelector('.comments-count').textContent = photos[0].comments.length;
+} else {
+  bigPicture.querySelector('.social__comment-count').textContent = photos[0].comments.length + getCommentsTitle(photos[0].comments);
+  bigPicture.querySelector('.social__comments-loader').classList.add('hidden');
 }
 
 var renderComment = function (comment) {
@@ -107,14 +115,12 @@ var renderComment = function (comment) {
 
 var commentList = bigPicture.querySelector('.social__comments');
 
-if (photos[0].comments.length > 5) {
-  for (i = 0; i < 5; i++) {
+if (photos[0].comments.length > SHOWN_COMMENTS_COUNT) {
+  for (i = 0; i < SHOWN_COMMENTS_COUNT; i++) {
     renderComment(photos[0].comments[i]);
   }
 } else {
-  photos[0].comments.forEach(function (comment) {
-    renderComment(comment);
-  });
+  photos[0].comments.forEach(renderComment);
 }
 commentList.appendChild(fragment);
 
