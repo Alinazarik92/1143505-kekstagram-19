@@ -25,7 +25,7 @@ var getRandomElement = function (min, arr) {
 
 var getCommentsList = function () {
   var randomComments = [];
-  for (var i = 0; i < getRandomNumber(1, 4); i++) {
+  for (var i = 0; i < getRandomNumber(1, 18); i++) {
     randomComments[i] = {
       avatar: 'img/avatar-' + getRandomNumber(1, 6) + '.svg',
       message: getRandomElement(0, MESSAGES),
@@ -64,3 +64,64 @@ photos.forEach(function (photo) {
   fragment.appendChild(pictureElement);
 });
 pictureContainerElement.appendChild(fragment);
+
+var bigPicture = document.querySelector('.big-picture');
+bigPicture.classList.remove('hidden');
+
+var bigPictureImage = bigPicture.querySelector('.big-picture__img');
+bigPictureImage.querySelector('img').src = photos[0].url;
+bigPicture.querySelector('.likes-count').textContent = photos[0].likes;
+
+var SHOWN_COMMENT_COUNT = 5;
+
+var getCommentTitle = function (arr) {
+  var commentTitle = '';
+  if (arr.length === 1) {
+    commentTitle = ' комментарий';
+  }
+  if (arr.length >= 2 && arr.length <= 4) {
+    commentTitle = ' комментария';
+  }
+  if (arr.length === 5) {
+    commentTitle = ' комментариев';
+  }
+  return commentTitle;
+};
+
+if (photos[0].comments.length > SHOWN_COMMENT_COUNT) {
+  bigPicture.querySelector('.comments-count').textContent = photos[0].comments.length;
+} else {
+  bigPicture.querySelector('.social__comment-count').textContent = photos[0].comments.length + getCommentTitle(photos[0].comments);
+  bigPicture.querySelector('.social__comments-loader').classList.add('hidden');
+}
+
+var renderComment = function (comment) {
+  var socialComment = document.createElement('li');
+  socialComment.classList.add('social__comment');
+  var socialPicture = document.createElement('img');
+  socialPicture.classList.add('social__picture');
+  socialPicture.src = comment.avatar;
+  socialPicture.alt = comment.name;
+  socialPicture.width = 35;
+  socialPicture.height = 35;
+  socialComment.appendChild(socialPicture);
+  var socialText = document.createElement('p');
+  socialText.classList.add('social__text');
+  socialText.textContent = comment.message;
+  socialComment.appendChild(socialText);
+
+  fragment.appendChild(socialComment);
+};
+
+var commentList = bigPicture.querySelector('.social__comments');
+
+if (photos[0].comments.length > SHOWN_COMMENT_COUNT) {
+  for (i = 0; i < SHOWN_COMMENT_COUNT; i++) {
+    renderComment(photos[0].comments[i]);
+  }
+} else {
+  photos[0].comments.forEach(renderComment);
+}
+commentList.appendChild(fragment);
+
+document.querySelector('body').classList.add('modal-open');
