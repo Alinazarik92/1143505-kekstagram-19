@@ -1,71 +1,78 @@
 'use strict';
 
 (function () {
-
   var imageUpload = document.querySelector('.img-upload__overlay');
   var imageUploadOpen = document.querySelector('.img-upload__input');
   var imageUploadClose = imageUpload.querySelector('.img-upload__cancel');
+  var form = document.querySelector('.img-upload__form');
 
-  var pressEscImageUpload = function (evt) {
-    if (evt.key === window.preview.ESC_KEY) {
-      imageUpload.classList.add('hidden');
-      imageUploadOpen.value = '';
-    }
+  var onImageUploadEscPress = function (evt) {
+    window.preview.isEscPress(evt, onImageUploadClose);
+  };
+
+  var onImageUploadCloseEnterPress = function (evt) {
+    window.preview.isEnterPress(evt, onImageUploadClose);
   };
 
   var checkInputFocus = function () {
     window.validation.hashtag.addEventListener('focus', function () {
-      document.removeEventListener('keydown', pressEscImageUpload);
+      document.removeEventListener('keydown', onImageUploadEscPress);
     });
     window.validation.description.addEventListener('focus', function () {
-      document.removeEventListener('keydown', pressEscImageUpload);
+      document.removeEventListener('keydown', onImageUploadEscPress);
     });
     window.validation.hashtag.addEventListener('blur', function () {
-      document.addEventListener('keydown', pressEscImageUpload);
+      document.addEventListener('keydown', onImageUploadEscPress);
     });
     window.validation.description.addEventListener('blur', function () {
-      document.addEventListener('keydown', pressEscImageUpload);
+      document.addEventListener('keydown', onImageUploadEscPress);
     });
   };
 
-  var openImageUpload = function () {
-    imageUpload.classList.remove('hidden');
-    document.addEventListener('keydown', pressEscImageUpload);
-    checkInputFocus();
+  var showSuccessMessage = function (element) {
+    window.form.closeImageUpload();
+    window.load.openMessage(element);
   };
 
-  var closeImageUpload = function () {
+  var showErrorMessage = function (element, error) {
+    window.form.closeImageUpload();
+    window.load.openMessage(element, error);
+  };
+
+  var onFormSubmit = function (evt) {
+    evt.preventDefault();
+    window.upload.sendData(new FormData(form), showSuccessMessage, showErrorMessage);
+  };
+
+  var onImageUploadClose = function () {
     imageUpload.classList.add('hidden');
     imageUploadOpen.value = '';
-    document.removeEventListener('keydown', pressEscImageUpload);
+    window.scale.turnOffChange();
+    window.effect.turnOffChange();
+
+    imageUploadClose.removeEventListener('click', onImageUploadClose);
+    imageUploadClose.removeEventListener('keydown', onImageUploadCloseEnterPress);
+    document.removeEventListener('keydown', onImageUploadEscPress);
+
+    form.removeEventListener('submit', onFormSubmit);
   };
 
-  imageUploadOpen.addEventListener('change', function () {
-    openImageUpload();
-    window.effect.effectLevel.classList.add('hidden');
-    window.scale.scaleControlValue.value = window.scale.scaleValue + '%';
-    if (window.scale.scaleControlValue.value !== '100%') {
-      window.scale.scaleValue = window.scale.SCALE_VALUE;
-      window.scale.scaleControlValue.value = window.scale.scaleValue + '%';
-      window.scale.imageUploadPreview.style = 'transform: scale(' + (window.scale.scaleValue / 100) + ')';
-    }
-    if (window.effect.imagePreview.className !== 'effects__preview--none') {
-      if (window.effect.imagePreview.className === '') {
-        window.effect.imagePreview.classList.add('effects__preview--none');
-      } else {
-        window.effect.imagePreview.classList.remove(window.effect.imagePreview.className);
-        window.effect.imagePreview.classList.add('effects__preview--none');
-      }
-    }
-    window.effect.isFilterSelection();
-  });
+  var onImageUpload = function () {
+    imageUpload.classList.remove('hidden');
+    checkInputFocus();
+    window.scale.turnOnChange();
+    window.effect.turnOnChange();
 
-  imageUploadClose.addEventListener('click', function () {
-    closeImageUpload();
-  });
-  imageUploadClose.addEventListener('keydown', function (evt) {
-    if (evt.key === window.preview.ENTER_KEY) {
-      closeImageUpload();
-    }
-  });
+    imageUploadClose.addEventListener('click', onImageUploadClose);
+    imageUploadClose.addEventListener('keydown', onImageUploadCloseEnterPress);
+    document.addEventListener('keydown', onImageUploadEscPress);
+
+    form.addEventListener('submit', onFormSubmit);
+  };
+
+  imageUploadOpen.addEventListener('change', onImageUpload);
+
+  window.form = {
+    closeImageUpload: onImageUploadClose
+  };
 })();
