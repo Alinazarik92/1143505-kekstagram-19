@@ -9,7 +9,7 @@
   description.addEventListener('invalid', function () {
     if (description.validity.tooLong) {
       description.setCustomValidity('Комментарий не должен превышать 140 символов');
-      description.style = 'border-color: tomato';
+      description.classList.add('input-error');
     }
   });
 
@@ -17,6 +17,13 @@
     hashtags = evt.target.value.split(' ');
     var isHashtagValid = true;
     var hastagRegExp = new RegExp('^[a-z0-9]+$');
+
+    if (hashtags.length === 1 && hashtags[0].trim() === '') {
+      isHashtagValid = true;
+      hashtag.setCustomValidity('');
+      hashtag.classList.remove('input-error');
+      return;
+    }
 
     if (hashtags.length > 5) {
       hashtag.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
@@ -26,18 +33,22 @@
       for (var k = 0; k < hashtags.length; k++) {
         if (hashtags[k].startsWith('#') === false) {
           hashtag.setCustomValidity('Хэш-тег должен начинаться с символа # (решётка)');
+          hashtag.classList.add('input-error');
           isHashtagValid = false;
           return;
         } else if (hashtags[k] === '#') {
           hashtag.setCustomValidity('Хэш-тег не может состоять только из одной решётки');
+          hashtag.classList.add('input-error');
           isHashtagValid = false;
           return;
         } else if (hashtags[k].length > 20) {
           hashtag.setCustomValidity('Максимальная длина одного хэш-тега 20 символов, включая решётку');
+          hashtag.classList.add('input-error');
           isHashtagValid = false;
           return;
         } else if (hastagRegExp.test(hashtags[k].substr(1, hashtags[k].length)) === false) {
           hashtag.setCustomValidity('Строка после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы (#, @, $ и т.п.), символы пунктуации (тире, дефис, запятая и т.п.), эмодзи и т.д.');
+          hashtag.classList.add('input-error');
           isHashtagValid = false;
           return;
         } else {
@@ -49,6 +60,7 @@
           }
           if (count > 1) {
             hashtag.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
+            hashtag.classList.add('input-error');
             isHashtagValid = false;
             return;
           }
@@ -59,6 +71,7 @@
     if (isHashtagValid) {
       hashtag.setCustomValidity('');
       hashtag.valid = true;
+      hashtag.classList.remove('input-error');
     }
   });
 

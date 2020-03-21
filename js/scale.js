@@ -15,35 +15,54 @@
   var getScaleValueBigger = function () {
     if (scaleValue === SCALE_VALUE_MAX) {
       return scaleValue;
-    } else {
-      scaleValue = scaleValue + STEP;
-      return scaleValue;
     }
+    scaleValue += STEP;
+    return scaleValue;
   };
 
   var getScaleValueSmaller = function () {
     if (scaleValue === SCALE_VALUE_MIN) {
       return scaleValue;
-    } else {
-      scaleValue = scaleValue - STEP;
-      return scaleValue;
     }
+    scaleValue -= STEP;
+    return scaleValue;
   };
 
-  scaleControlReduce.addEventListener('click', function () {
-    scaleControlValue.value = getScaleValueSmaller() + '%';
+  var resizeImage = function () {
+    var value = scaleValue + '%';
+    scaleControlValue.value = value;
+    scaleControlValue.setAttribute('value', value);
     imageUploadPreview.style = 'transform: scale(' + (scaleValue / 100) + ')';
-  });
+  };
 
-  scaleControlEnlarge.addEventListener('click', function () {
-    scaleControlValue.value = getScaleValueBigger() + '%';
-    imageUploadPreview.style = 'transform: scale(' + (scaleValue / 100) + ')';
-  });
+  var onImageSmallerButtonPress = function () {
+    getScaleValueSmaller();
+    resizeImage();
+  };
+
+  var onImageBiggerButtonPress = function () {
+    getScaleValueBigger();
+    resizeImage();
+  };
+
+  var resetScale = function () {
+    scaleValue = SCALE_VALUE;
+    resizeImage();
+  };
+
+  var turnOnScaleChange = function () {
+    resetScale();
+    scaleControlReduce.addEventListener('click', onImageSmallerButtonPress);
+    scaleControlEnlarge.addEventListener('click', onImageBiggerButtonPress);
+  };
+
+  var turnOffScaleChange = function () {
+    scaleControlReduce.removeEventListener('click', onImageSmallerButtonPress);
+    scaleControlEnlarge.removeEventListener('click', onImageBiggerButtonPress);
+  };
 
   window.scale = {
-    SCALE_VALUE: SCALE_VALUE,
-    scaleValue: scaleValue,
-    scaleControlValue: scaleControlValue,
-    imageUploadPreview: imageUploadPreview
+    turnOnChange: turnOnScaleChange,
+    turnOffChange: turnOffScaleChange
   };
 })();

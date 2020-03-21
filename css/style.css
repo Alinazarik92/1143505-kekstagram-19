@@ -765,6 +765,10 @@ main {
   border-radius: 5px;
 }
 
+.input-error {
+  border-color: tomato;
+}
+
 
 /**
  * Кнопка для отправки изображения
@@ -1311,6 +1315,7 @@ main {
   margin-bottom: 50px;
 
   font-size: 32px;
+  line-height: 32px;
 }
 
 .success__title {
@@ -1318,6 +1323,7 @@ main {
   margin-bottom: 50px;
 
   font-size: 32px;
+  line-height: 32px;
 }
 
 .error__title::before {
