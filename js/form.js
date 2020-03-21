@@ -55,6 +55,9 @@
     document.removeEventListener('keydown', onImageUploadEscPress);
 
     form.removeEventListener('submit', onFormSubmit);
+
+    document.querySelector('.pictures').addEventListener('click', window.preview.onBigPictureOpen);
+    document.querySelector('.pictures').addEventListener('keydown', window.preview.onBigPictureOpenEnterPress);
   };
 
   var onImageUpload = function () {
@@ -62,6 +65,9 @@
     setFormEventListeners();
     window.scale.turnOnChange();
     window.effect.turnOnChange();
+
+    document.querySelector('.pictures').removeEventListener('click', window.preview.onBigPictureOpen);
+    document.querySelector('.pictures').removeEventListener('keydown', window.preview.onBigPictureOpenEnterPress);
 
     imageUploadClose.addEventListener('click', onImageUploadClose);
     imageUploadClose.addEventListener('keydown', onImageUploadCloseEnterPress);

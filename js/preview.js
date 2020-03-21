@@ -11,6 +11,7 @@
   var loadNextCommentsButton = document.querySelector('.social__comments-loader');
   var lastShownIndex = START_VALUE;
   var shownCommentsCount = START_VALUE;
+  var photo;
 
   var setVariableValue = function (variable, value) {
     variable = value;
@@ -38,6 +39,9 @@
     document.removeEventListener('keydown', onBigPIctureEscPress);
     bigPictureClose.removeEventListener('keydown', onBigPictureCloseEnterPress);
     bigPictureClose.removeEventListener('click', onBigPictureClose);
+    loadNextCommentsButton.addEventListener('click', addComment);
+    lastShownIndex = START_VALUE;
+    photo = undefined;
   };
 
   var onBigPictureOpen = function (evt) {
@@ -61,10 +65,15 @@
     bigPictureClose.addEventListener('keydown', onBigPictureCloseEnterPress);
     bigPictureClose.addEventListener('click', onBigPictureClose);
     commentList.innerHTML = '';
-    setVariableValue(lastShownIndex, START_VALUE);
-    setVariableValue(shownCommentsCount, START_VALUE);
+    lastShownIndex = START_VALUE;
+    shownCommentsCount = START_VALUE;
     bigPicture.querySelector('.social__comment-count').classList.remove('hidden');
-    renderAllComments(target.getAttribute('original-url'));
+
+    photo = window.message.getPhotos().find(function (item) {
+      return item.url === target.getAttribute('original-url');
+    });
+
+    renderAllComments();
   };
 
   var renderComment = function (comment) {
@@ -87,7 +96,7 @@
     commentList.appendChild(fragment);
   };
 
-  var addComment = function (photo) {
+  var addComment = function () {
     if (photo.comments.length > SHOWN_COMMENT_COUNT) {
       for (var i = 0; i < SHOWN_COMMENT_COUNT && (getVariableValue(lastShownIndex) + i) < photo.comments.length; i++) {
         renderComment(photo.comments[getVariableValue(lastShownIndex) + i]);
@@ -115,15 +124,10 @@
     }
   };
 
-  var renderAllComments = function (photoUrl) {
-    var photoItem = window.message.getPhotos().find(function (item) {
-      return item.url === photoUrl;
-    });
+  var renderAllComments = function () {
+    addComment(photo);
 
-    addComment(photoItem);
-    loadNextCommentsButton.addEventListener('click', function () {
-      addComment(photoItem);
-    });
+    loadNextCommentsButton.addEventListener('click', addComment);
   };
 
   window.preview = {
