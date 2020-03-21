@@ -9,7 +9,7 @@
 
   var openErrorMessage = function (text) {
     var element = window.message.createErrorElement();
-    window.message.openMessage(element, text);
+    window.message.open(element, text);
     document.querySelector('.error__button').textContent = 'Закрыть';
   };
 

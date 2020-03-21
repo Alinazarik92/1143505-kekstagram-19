@@ -40,7 +40,7 @@
     xhr.addEventListener('timeout', function () {
       error = 'Ошибка загрузки файла: время ожидания превысило ' + xhr.timeout + 'мс';
       element = window.message.createErrorElement();
-      onError.openMessage(element, error);
+      onError(element, error);
     });
 
     xhr.timeout = XHR_TIMEOUT;

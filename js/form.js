@@ -31,12 +31,12 @@
 
   var showSuccessMessage = function (element) {
     window.form.closeImageUpload();
-    window.message.openMessage(element);
+    window.message.open(element);
   };
 
   var showErrorMessage = function (element, error) {
     window.form.closeImageUpload();
-    window.message.openMessage(element, error);
+    window.message.open(element, error);
   };
 
   var onFormSubmit = function (evt) {
