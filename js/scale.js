@@ -16,7 +16,7 @@
     if (scaleValue === SCALE_VALUE_MAX) {
       return scaleValue;
     }
-    scaleValue = scaleValue + STEP;
+    scaleValue += STEP;
     return scaleValue;
   };
 
@@ -24,7 +24,7 @@
     if (scaleValue === SCALE_VALUE_MIN) {
       return scaleValue;
     }
-    scaleValue = scaleValue - STEP;
+    scaleValue -= STEP;
     return scaleValue;
   };
 

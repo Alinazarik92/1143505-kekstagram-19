@@ -7,14 +7,14 @@
   var form = document.querySelector('.img-upload__form');
 
   var onImageUploadEscPress = function (evt) {
-    window.preview.isEscPress(evt, onImageUploadClose);
+    window.util.isEscPress(evt, onImageUploadClose);
   };
 
   var onImageUploadCloseEnterPress = function (evt) {
-    window.preview.isEnterPress(evt, onImageUploadClose);
+    window.util.isEnterPress(evt, onImageUploadClose);
   };
 
-  var checkInputFocus = function () {
+  var setFormEventListeners = function () {
     window.validation.hashtag.addEventListener('focus', function () {
       document.removeEventListener('keydown', onImageUploadEscPress);
     });
@@ -31,17 +31,17 @@
 
   var showSuccessMessage = function (element) {
     window.form.closeImageUpload();
-    window.load.openMessage(element);
+    window.message.openMessage(element);
   };
 
   var showErrorMessage = function (element, error) {
     window.form.closeImageUpload();
-    window.load.openMessage(element, error);
+    window.message.openMessage(element, error);
   };
 
   var onFormSubmit = function (evt) {
     evt.preventDefault();
-    window.upload.sendData(new FormData(form), showSuccessMessage, showErrorMessage);
+    window.load.sendData(new FormData(form), showSuccessMessage, showErrorMessage);
   };
 
   var onImageUploadClose = function () {
@@ -59,7 +59,7 @@
 
   var onImageUpload = function () {
     imageUpload.classList.remove('hidden');
-    checkInputFocus();
+    setFormEventListeners();
     window.scale.turnOnChange();
     window.effect.turnOnChange();
 

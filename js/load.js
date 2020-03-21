@@ -1,71 +1,63 @@
 'use strict';
 
 (function () {
-  var URL = ' https://js.dump.academy/kekstagram/data';
-  var photos = [];
-
-  var setPhotos = function (arr) {
-    photos = arr.slice();
-    return photos;
+  var Url = {
+    POST: 'https://js.dump.academy/kekstagram',
+    GET: ' https://js.dump.academy/kekstagram/data'
   };
-
-  var createSuccessElement = function () {
-    var successTemplate = document.querySelector('#success')
-        .content
-        .querySelector('.success');
-    var successElement = successTemplate.cloneNode(true);
-    return successElement;
+  var RequestMethod = {
+    GET: 'GET',
+    POST: 'POST',
   };
+  var XHR_TIMEOUT = 10000;
+  var TYPE_JSON = 'json';
+  var CODE_OK = 200;
 
-  var createErrorElement = function () {
-    var errorTemplate = document.querySelector('#error')
-        .content
-        .querySelector('.error');
-    var errorElement = errorTemplate.cloneNode(true);
-    return errorElement;
-  };
+  var sendData = function (data, onSuccess, onError) {
+    var xhr = new XMLHttpRequest();
+    var error;
+    var element;
+    xhr.responseType = TYPE_JSON;
 
-  var onMessageCloseEnterPress = function (evt) {
-    window.preview.isEnterPress(evt, onMessageClose);
-  };
+    xhr.addEventListener('load', function () {
 
-  var onMessageEscPress = function (evt) {
-    window.preview.isEscPress(evt, onMessageClose);
-  };
-
-  var onMessageClose = function () {
-    var message = document.querySelector('main').lastChild;
-    document.querySelector('main').removeChild(message);
-  };
-
-  var openMessage = function (element, text) {
-    var fragment = document.createDocumentFragment();
-    fragment.appendChild(element);
-    document.querySelector('main').appendChild(fragment);
-    var message = document.querySelector('main').lastChild;
-
-    if (message.className === 'error') {
-      message.querySelector('h2').textContent = text;
-    }
-
-    message.querySelector('button').addEventListener('click', onMessageClose);
-    message.querySelector('button').addEventListener('keydown', onMessageCloseEnterPress);
-    document.addEventListener('keydown', onMessageEscPress);
-    message.addEventListener('click', function (evt) {
-      if (evt.target === message) {
-        onMessageClose();
+      if (xhr.status === CODE_OK) {
+        element = window.message.createSuccessElement();
+        onSuccess(element);
+      } else {
+        error = 'Ошибка загрузки файла: ' + xhr.status + ' ' + xhr.statusText;
+        element = window.message.createErrorElement();
+        onError(element, error);
       }
     });
+
+    xhr.addEventListener('error', function () {
+      error = 'Ошибка загрузки файла: проверьте подключение к Интернету';
+      element = window.message.createErrorElement();
+      onError(element, error);
+    });
+
+    xhr.addEventListener('timeout', function () {
+      error = 'Ошибка загрузки файла: время ожидания превысило ' + xhr.timeout + 'мс';
+      element = window.message.createErrorElement();
+      onError.openMessage(element, error);
+    });
+
+    xhr.timeout = XHR_TIMEOUT;
+
+    xhr.open(RequestMethod.POST, Url.POST);
+    xhr.send(data);
   };
 
   var getData = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
+    xhr.responseType = TYPE_JSON;
     var text;
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
-        setPhotos(xhr.response);
+      if (xhr.status === CODE_OK) {
+        window.message.setPhotos(xhr.response);
+        var photos = window.message.getPhotos();
         onSuccess(photos);
       } else {
         text = 'Не удалось загрузить фотографии других пользователей. Ошибка: ' + xhr.status + ' ' + xhr.statusText;
@@ -81,23 +73,14 @@
       onError(text);
     });
 
-    xhr.timeout = 10000;
+    xhr.timeout = XHR_TIMEOUT;
 
-    xhr.open('GET', URL);
+    xhr.open(RequestMethod.GET, Url.GET);
     xhr.send();
-
-    return photos;
-  };
-
-  var getPhotos = function () {
-    return photos;
   };
 
   window.load = {
-    getData: getData,
-    createSuccessElement: createSuccessElement,
-    createErrorElement: createErrorElement,
-    openMessage: openMessage,
-    getPhotos: getPhotos
+    sendData: sendData,
+    getData: getData
   };
 })();

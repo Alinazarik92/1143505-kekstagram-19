@@ -8,10 +8,9 @@
   var fragment = document.createDocumentFragment();
 
   var openErrorMessage = function (text) {
-    var element = window.load.createErrorElement();
-    window.load.openMessage(element, text);
-    var message = document.querySelector('main').lastChild;
-    message.querySelector('button').textContent = 'Закрыть';
+    var element = window.message.createErrorElement();
+    window.message.openMessage(element, text);
+    document.querySelector('.error__button').textContent = 'Закрыть';
   };
 
   var drawPictures = function (photos) {
@@ -22,6 +21,7 @@
       pictureElement.querySelector('.picture__img').alt = photo.description;
       pictureElement.querySelector('.picture__likes').textContent = photo.likes;
       pictureElement.querySelector('.picture__comments').textContent = photo.comments.length;
+      pictureElement.setAttribute('original-url', photo.url);
 
       fragment.appendChild(pictureElement);
     });
