@@ -31,7 +31,17 @@
     return effectDepthValue;
   };
 
+
+  // var classNameToFilter = {
+  //   'effects__preview--none': 'filter: none',
+  //   'effects__preview--chrome': 'filter: grayscale(' + getFilterValue(Effect.CHROME.MIN, Effect.CHROME.MAX) + ')',
+  //   'effects__preview--sepia': 'filter: sepia(' + getFilterValue(Effect.SEPIA.MIN, Effect.SEPIA.MAX) + ')',
+  //   'effects__preview--marvin': 'filter: invert(' + getFilterValue(Effect.MARVIN.MIN, Effect.MARVIN.MAX) + '%)',
+  //   'effects__preview--phobos': 'filter: blur(' + getFilterValue(Effect.PHOBOS.MIN, Effect.PHOBOS.MAX) + 'px)',
+  //   'effects__preview--heat': 'filter: brightness(' + getFilterValue(Effect.HEAT.MIN, Effect.HEAT.MAX) + ')'
+  // };
   var chooseFilter = function () {
+    // imagePreview.style = classNameToFilter[imagePreview.className];
     if (imagePreview.className === 'effects__preview--none') {
       imagePreview.style = 'filter: none';
     }

@@ -26,10 +26,14 @@
       fragment.appendChild(pictureElement);
     });
     pictureContainerElement.appendChild(fragment);
+    document.querySelector('.img-filters').classList.remove('img-filters--inactive');
   };
 
   window.load.getData(drawPictures, openErrorMessage);
   pictureContainerElement.addEventListener('click', window.preview.onBigPictureOpen);
   pictureContainerElement.addEventListener('keydown', window.preview.onBigPictureOpenEnterPress);
 
+  window.picture = {
+    drawPictures: drawPictures
+  };
 })();

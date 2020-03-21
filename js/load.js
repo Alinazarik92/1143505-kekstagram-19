@@ -2,6 +2,12 @@
 
 (function () {
   var URL = ' https://js.dump.academy/kekstagram/data';
+  var photos = [];
+
+  var setPhotos = function (arr) {
+    photos = arr.slice();
+    return photos;
+  };
 
   var createSuccessElement = function () {
     var successTemplate = document.querySelector('#success')
@@ -59,7 +65,8 @@
 
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
-        onSuccess(xhr.response);
+        setPhotos(xhr.response);
+        onSuccess(photos);
       } else {
         text = 'Не удалось загрузить фотографии других пользователей. Ошибка: ' + xhr.status + ' ' + xhr.statusText;
         onError(text);
@@ -78,12 +85,19 @@
 
     xhr.open('GET', URL);
     xhr.send();
+
+    return photos;
+  };
+
+  var getPhotos = function () {
+    return photos;
   };
 
   window.load = {
     getData: getData,
     createSuccessElement: createSuccessElement,
     createErrorElement: createErrorElement,
-    openMessage: openMessage
+    openMessage: openMessage,
+    getPhotos: getPhotos
   };
 })();
