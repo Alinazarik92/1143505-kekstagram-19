@@ -7,8 +7,9 @@
       .querySelector('.picture');
   var fragment = document.createDocumentFragment();
 
-  var openErrorMessage = function (text) {
-    var element = window.message.createErrorElement();
+  var openErrorMessage = function () {
+    var element = window.message.createElement('#error', '.error');
+    var text = 'Не удалось загрузить фотографии других пользователей. Проверьте подключение к Интернету и перезагрузите страницу.';
     window.message.open(element, text);
     document.querySelector('.error__button').textContent = 'Закрыть';
   };
@@ -34,6 +35,6 @@
   pictureContainerElement.addEventListener('keydown', window.preview.onBigPictureOpenEnterPress);
 
   window.picture = {
-    drawPictures: drawPictures
+    draw: drawPictures
   };
 })();

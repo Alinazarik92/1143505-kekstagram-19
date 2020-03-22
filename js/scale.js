@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var SCALE_VALUE_MIN = 0;
+  var SCALE_VALUE_MIN = 25;
   var SCALE_VALUE_MAX = 100;
   var STEP = 25;
   var SCALE_VALUE = 100;
@@ -57,6 +57,7 @@
   };
 
   var turnOffScaleChange = function () {
+    resetScale();
     scaleControlReduce.removeEventListener('click', onImageSmallerButtonPress);
     scaleControlEnlarge.removeEventListener('click', onImageBiggerButtonPress);
   };

@@ -16,8 +16,16 @@
       action();
     }
   };
+
+  var isOverlayClick = function (evt, element, action) {
+    if (evt.target === element) {
+      action();
+    }
+  };
+
   window.util = {
     isEscPress: isEscPress,
-    isEnterPress: isEnterPress
+    isEnterPress: isEnterPress,
+    isOverlayClick: isOverlayClick
   };
 })();

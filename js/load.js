@@ -22,24 +22,24 @@
     xhr.addEventListener('load', function () {
 
       if (xhr.status === CODE_OK) {
-        element = window.message.createSuccessElement();
+        element = window.message.createElement('#success', '.success');
         onSuccess(element);
       } else {
         error = 'Ошибка загрузки файла: ' + xhr.status + ' ' + xhr.statusText;
-        element = window.message.createErrorElement();
+        element = window.message.createElement('#error', '.error');
         onError(element, error);
       }
     });
 
     xhr.addEventListener('error', function () {
       error = 'Ошибка загрузки файла: проверьте подключение к Интернету';
-      element = window.message.createErrorElement();
+      element = window.message.createElement('#error', '.error');
       onError(element, error);
     });
 
     xhr.addEventListener('timeout', function () {
       error = 'Ошибка загрузки файла: время ожидания превысило ' + xhr.timeout + 'мс';
-      element = window.message.createErrorElement();
+      element = window.message.createElement('#error', '.error');
       onError(element, error);
     });
 

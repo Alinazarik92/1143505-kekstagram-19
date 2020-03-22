@@ -35,31 +35,34 @@
 
   var onFilterChange = function (evt) {
     var activeFiter = evt.target;
-    var pictures = document.querySelectorAll('.picture');
 
-    filterButtons.forEach(function (filterButton) {
-      filterButton.classList.remove('img-filters__button--active');
-    });
+    if (!activeFiter.classList.contains('img-filters__button--active')) {
+      var pictures = document.querySelectorAll('.picture');
 
-    activeFiter.classList.add('img-filters__button--active');
+      filterButtons.forEach(function (filterButton) {
+        filterButton.classList.remove('img-filters__button--active');
+      });
 
-    pictures.forEach(function (picture) {
-      document.querySelector('.pictures').removeChild(picture);
-    });
+      activeFiter.classList.add('img-filters__button--active');
 
-    switch (activeFiter) {
-      case filterDefault:
-        window.picture.drawPictures(window.message.getPhotos().slice());
-        break;
-      case filterRandom:
-        window.picture.drawPictures(getRandomPhotos(window.message.getPhotos()));
-        break;
-      case filterDiscussed:
-        window.picture.drawPictures(getDiscussedPhotos(window.message.getPhotos()));
-        break;
-      default:
-        window.picture.drawPictures(window.message.getPhotos().slice());
-        break;
+      pictures.forEach(function (picture) {
+        document.querySelector('.pictures').removeChild(picture);
+      });
+
+      switch (activeFiter) {
+        case filterDefault:
+          window.picture.draw(window.message.getPhotos().slice());
+          break;
+        case filterRandom:
+          window.picture.draw(getRandomPhotos(window.message.getPhotos()));
+          break;
+        case filterDiscussed:
+          window.picture.draw(getDiscussedPhotos(window.message.getPhotos()));
+          break;
+        default:
+          window.picture.draw(window.message.getPhotos().slice());
+          break;
+      }
     }
   };
 
