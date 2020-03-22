@@ -13,6 +13,7 @@
   var imagePreview = imageUploadPreview.querySelector('img');
   var effectLevel = imageUpload.querySelector('.img-upload__effect-level');
   var effectsList = imageUpload.querySelectorAll('.effects__radio');
+  var effectNoneInput = imageUpload.querySelector('#effect-none');
   var effectLevelValue = effectLevel.querySelector('.effect-level__value');
   var effectLevelLine = effectLevel.querySelector('.effect-level__line');
   var effectLevelPin = effectLevel.querySelector('.effect-level__pin');
@@ -130,6 +131,7 @@
       imagePreview.classList.add('effects__preview--none');
     }
     chooseFilter();
+    effectNoneInput.checked = true;
   };
 
   var turnOnEffectChange = function () {

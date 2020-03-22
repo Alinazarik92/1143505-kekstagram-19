@@ -15,28 +15,36 @@
     window.util.isEnterPress(evt, onImageUploadClose);
   };
 
-  var setFormEventListeners = function () {
-    window.validation.hashtag.addEventListener('focus', function () {
-      document.removeEventListener('keydown', onImageUploadEscPress);
-    });
-    window.validation.description.addEventListener('focus', function () {
-      document.removeEventListener('keydown', onImageUploadEscPress);
-    });
-    window.validation.hashtag.addEventListener('blur', function () {
-      document.addEventListener('keydown', onImageUploadEscPress);
-    });
-    window.validation.description.addEventListener('blur', function () {
-      document.addEventListener('keydown', onImageUploadEscPress);
-    });
+  var onEscPressListenerAdd = function () {
+    document.addEventListener('keydown', onImageUploadEscPress);
   };
 
+  var onEscPressListenerRemove = function () {
+    document.removeEventListener('keydown', onImageUploadEscPress);
+  };
+
+  var setFormEventListeners = function () {
+    window.validation.hashtag.addEventListener('focus', onEscPressListenerRemove);
+    window.validation.description.addEventListener('focus', onEscPressListenerRemove);
+    window.validation.hashtag.addEventListener('blur', onEscPressListenerAdd);
+    window.validation.description.addEventListener('blur', onEscPressListenerAdd);
+  };
+
+  var removeFormEventListeners = function () {
+    window.validation.hashtag.removeEventListener('focus', onEscPressListenerRemove);
+    window.validation.description.removeEventListener('focus', onEscPressListenerRemove);
+    window.validation.hashtag.removeEventListener('blur', onEscPressListenerAdd);
+    window.validation.description.removeEventListener('blur', onEscPressListenerAdd);
+  };
+
+
   var showSuccessMessage = function (element) {
-    window.form.closeImageUpload();
+    onImageUploadClose();
     window.message.open(element);
   };
 
   var showErrorMessage = function (element, error) {
-    window.form.closeImageUpload();
+    onImageUploadClose();
     window.message.open(element, error);
   };
 
@@ -47,6 +55,7 @@
 
   var onImageUploadClose = function () {
     imageUpload.classList.add('hidden');
+    removeFormEventListeners();
     imageUploadOpen.value = '';
     window.scale.turnOffChange();
     window.effect.turnOffChange();

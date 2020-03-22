@@ -30,7 +30,15 @@
   };
 
   var onMessageClose = function () {
-    main.removeChild(main.lastChild);
+    var message = main.lastChild;
+    var messageCloseButton = message.querySelector('button');
+
+    messageCloseButton.removeEventListener('click', onMessageClose);
+    messageCloseButton.removeEventListener('keydown', onMessageCloseEnterPress);
+    document.removeEventListener('keydown', onMessageEscPress);
+    message.removeEventListener('click', onMessageOverlayClick);
+
+    main.removeChild(message);
   };
 
   var onMessageOverlayClick = function (evt) {
