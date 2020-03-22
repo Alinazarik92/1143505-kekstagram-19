@@ -49,6 +49,7 @@
     imageUploadOpen.value = '';
     window.scale.turnOffChange();
     window.effect.turnOffChange();
+    window.validation.turnOffCheck();
 
     imageUploadClose.removeEventListener('click', onImageUploadClose);
     imageUploadClose.removeEventListener('keydown', onImageUploadCloseEnterPress);
@@ -65,6 +66,7 @@
     setFormEventListeners();
     window.scale.turnOnChange();
     window.effect.turnOnChange();
+    window.validation.turnOnCheck();
 
     document.querySelector('.pictures').removeEventListener('click', window.preview.onBigPictureOpen);
     document.querySelector('.pictures').removeEventListener('keydown', window.preview.onBigPictureOpenEnterPress);

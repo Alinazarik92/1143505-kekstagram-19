@@ -2,6 +2,8 @@
 
 (function () {
   var photos = [];
+  var main = document.querySelector('main');
+
 
   var setPhotos = function (arr) {
     photos = arr.slice();
@@ -11,20 +13,12 @@
     return photos;
   };
 
-  var createSuccessElement = function () {
-    var successTemplate = document.querySelector('#success')
+  var createElement = function (id, className) {
+    var template = document.querySelector(id)
         .content
-        .querySelector('.success');
-    var successElement = successTemplate.cloneNode(true);
-    return successElement;
-  };
-
-  var createErrorElement = function () {
-    var errorTemplate = document.querySelector('#error')
-        .content
-        .querySelector('.error');
-    var errorElement = errorTemplate.cloneNode(true);
-    return errorElement;
+        .querySelector(className);
+    var element = template.cloneNode(true);
+    return element;
   };
 
   var onMessageCloseEnterPress = function (evt) {
@@ -36,33 +30,32 @@
   };
 
   var onMessageClose = function () {
-    var message = document.querySelector('main').lastChild;
-    document.querySelector('main').removeChild(message);
+    main.removeChild(main.lastChild);
+  };
+
+  var onMessageOverlayClick = function (evt) {
+    window.util.isOverlayClick(evt, main.lastChild, onMessageClose);
   };
 
   var openMessage = function (element, text) {
     var fragment = document.createDocumentFragment();
     fragment.appendChild(element);
-    document.querySelector('main').appendChild(fragment);
-    var message = document.querySelector('main').lastChild;
+    main.appendChild(fragment);
+    var message = main.lastChild;
+    var messageCloseButton = message.querySelector('button');
 
-    if (message.className === 'error') {
+    if (message.classList.contains('error')) {
       message.querySelector('h2').textContent = text;
     }
 
-    message.querySelector('button').addEventListener('click', onMessageClose);
-    message.querySelector('button').addEventListener('keydown', onMessageCloseEnterPress);
+    messageCloseButton.addEventListener('click', onMessageClose);
+    messageCloseButton.addEventListener('keydown', onMessageCloseEnterPress);
     document.addEventListener('keydown', onMessageEscPress);
-    message.addEventListener('click', function (evt) {
-      if (evt.target === message) {
-        onMessageClose();
-      }
-    });
+    message.addEventListener('click', onMessageOverlayClick);
   };
 
   window.message = {
-    createSuccessElement: createSuccessElement,
-    createErrorElement: createErrorElement,
+    createElement: createElement,
     open: openMessage,
     getPhotos: getPhotos,
     setPhotos: setPhotos

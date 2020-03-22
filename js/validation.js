@@ -6,17 +6,17 @@
   var description = imageUpload.querySelector('.text__description');
   var hashtags = [];
 
-  description.addEventListener('invalid', function () {
+  var onDescriotionValidityCheck = function () {
     if (description.validity.tooLong) {
       description.setCustomValidity('Комментарий не должен превышать 140 символов');
       description.classList.add('input-error');
     }
-  });
+  };
 
-  hashtag.addEventListener('input', function (evt) {
+  var onHashtagValidityCheck = function (evt) {
     hashtags = evt.target.value.split(' ');
     var isHashtagValid = true;
-    var hastagRegExp = new RegExp('^[a-z0-9]+$');
+    var hastagRegExp = new RegExp('^[а-яА-ЯёЁa-zA-Z0-9]+$');
 
     if (hashtags.length === 1 && hashtags[0].trim() === '') {
       isHashtagValid = true;
@@ -73,10 +73,31 @@
       hashtag.valid = true;
       hashtag.classList.remove('input-error');
     }
-  });
+  };
+
+  var resetInput = function (input) {
+    input.value = '';
+    input.setCustomValidity('');
+    input.valid = true;
+    input.classList.remove('input-error');
+  };
+
+  var turnOnValidationCheck = function () {
+    description.addEventListener('invalid', onDescriotionValidityCheck);
+    hashtag.addEventListener('input', onHashtagValidityCheck);
+  };
+
+  var turnOffValidationCheck = function () {
+    resetInput(hashtag);
+    resetInput(description);
+    description.removeEventListener('invalid', onDescriotionValidityCheck);
+    hashtag.removeEventListener('input', onHashtagValidityCheck);
+  };
 
   window.validation = {
     hashtag: hashtag,
-    description: description
+    description: description,
+    turnOnCheck: turnOnValidationCheck,
+    turnOffCheck: turnOffValidationCheck
   };
 })();
