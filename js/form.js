@@ -5,6 +5,7 @@
   var imageUploadOpen = document.querySelector('.img-upload__input');
   var imageUploadClose = imageUpload.querySelector('.img-upload__cancel');
   var form = document.querySelector('.img-upload__form');
+  var picturesBlock = document.querySelector('.pictures');
 
   var onImageUploadEscPress = function (evt) {
     window.util.isEscPress(evt, onImageUploadClose);
@@ -57,8 +58,8 @@
 
     form.removeEventListener('submit', onFormSubmit);
 
-    document.querySelector('.pictures').addEventListener('click', window.preview.onBigPictureOpen);
-    document.querySelector('.pictures').addEventListener('keydown', window.preview.onBigPictureOpenEnterPress);
+    picturesBlock.addEventListener('click', window.preview.onBigPictureOpen);
+    picturesBlock.addEventListener('keydown', window.preview.onBigPictureOpenEnterPress);
   };
 
   var onImageUpload = function () {
@@ -68,8 +69,8 @@
     window.effect.turnOnChange();
     window.validation.turnOnCheck();
 
-    document.querySelector('.pictures').removeEventListener('click', window.preview.onBigPictureOpen);
-    document.querySelector('.pictures').removeEventListener('keydown', window.preview.onBigPictureOpenEnterPress);
+    picturesBlock.removeEventListener('click', window.preview.onBigPictureOpen);
+    picturesBlock.removeEventListener('keydown', window.preview.onBigPictureOpenEnterPress);
 
     imageUploadClose.addEventListener('click', onImageUploadClose);
     imageUploadClose.addEventListener('keydown', onImageUploadCloseEnterPress);
